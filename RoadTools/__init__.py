@@ -9,9 +9,12 @@ bl_info = {
 }
 
 import bpy
+from mathutils import Vector
+
 import sys
 import os
 import site
+import tomllib
 
 #   sys.path.append(os.path.dirname(__file__))
 import Clothoids
@@ -110,7 +113,27 @@ class OBJECT_OT_create_straight(bpy.types.Operator):
             data_to.objects = data_from.objects
 
         print(data_to)
-        road = data_to.objects[0].copy()  # independent duplicate
+        road = None
+
+        for obj in data_to.objects:
+            print(obj.name)
+            if "bed" in obj.name:
+                road = obj.copy()  # independent duplicate
+
+        bb = road.bound_box
+        # 8 corners, each is a Vector with (x, y, z)
+        for i, corner in enumerate(bb):
+            print(f"Corner {i}: {corner[0]:.2f}, {corner[1]:.2f}, {corner[2]:.2f}")
+
+        xs = [v[0] for v in road.bound_box]
+        ys = [v[1] for v in road.bound_box]
+        zs = [v[2] for v in road.bound_box]
+
+        min_corner = Vector((min(xs), min(ys), min(zs)))
+        max_corner = Vector((max(xs), max(ys), max(zs)))
+        dimensions = max_corner - min_corner
+
+        print(f"min_corner: {min_corner}, max_corner: {max_corner}")
 
         mesh = road.data  # the Mesh data block
 
@@ -131,17 +154,26 @@ class OBJECT_OT_create_straight(bpy.types.Operator):
                 if loop.vertex_index == 0:
                     uv_layer[loop.index].uv = (0.0, 0.0)
                 if loop.vertex_index == 1:
-                    uv_layer[loop.index].uv = (props.road_width/props.real_world_size.x, 0.0)
+                    real_world_size = (props.road_width / uv_layer[loop.index].uv[0],
+                                       0.0)
+                    print(f"real world size[{loop.vertex_index}]:{real_world_size}")
+                    uv_layer[loop_index].uv = (props.road_width / real_world_size[0], 0.0)
                 if loop.vertex_index == 2:  # target vertex index
-                    uv_layer[loop_index].uv = (0.0,props.road_length/props.real_world_size.y)
+                    real_world_size = (0.0,
+                                       max_corner.y / uv_layer[loop.index].uv[1])
+                    print(f"real world size[{loop.vertex_index}]:{real_world_size}")
+                    uv_layer[loop_index].uv = (0.0,props.road_length / real_world_size[1])
                 if loop.vertex_index == 3:
-                    uv_layer[loop_index].uv = (props.road_width/props.real_world_size.x,props.road_length/props.real_world_size.y)
+                    real_world_size = (props.road_width / uv_layer[loop.index].uv[0],
+                                       max_corner.y / uv_layer[loop.index].uv[1])
+                    print(f"real world size[{loop.vertex_index}]:{real_world_size}")
+                    uv_layer[loop_index].uv = (props.road_width / real_world_size[0],props.road_length / real_world_size[1])
 
         #obj = bpy.data.objects.new("profile", mesh_copy)
         bpy.context.collection.objects.link(road)
 
         return {'FINISHED'}
-    
+
 class VIEW3D_PT_road_tools_panel(bpy.types.Panel):
     bl_label = "Road Tools"
     bl_idname = "VIEW3D_PT_road_tools"

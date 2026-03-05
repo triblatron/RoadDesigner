@@ -14,5 +14,22 @@ class Vertex:
         self.tex_coord.x = Configurable.readConfig(config, "u", 0.0)
         self.tex_coord.y = Configurable.readConfig(config, "v", 0.0)
 
+    @classmethod
+    def compare(cls,a,b):
+        if a.position.y < b.position.y:
+            return -1
+        elif a.position.y > b.position.y:
+            return 1
+        elif a.position.x < b.position.x:
+            return -1
+        elif a.position.x > b.position.x:
+            return 1
+        elif a.position.z < b.position.z:
+            return -1
+        elif a.position.z > b.position.z:
+            return 1
+
+        return 0
+
     position : glm.vec3
     tex_coord : glm.vec2

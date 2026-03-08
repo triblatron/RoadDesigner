@@ -8,7 +8,9 @@ def assert_comparison(case, expected, actual, tolerance):
     case.assertIsNotNone(actual)
     if isinstance(actual, float) and isinstance(expected, float):
         case.assertAlmostEqual(actual, expected, delta=tolerance)
-
+    elif isinstance(actual, int) and isinstance(expected, int):
+        case.assertEqual(expected, actual
+                         )
 def find(obj:Any, path:str):
     attrs = path.split('.')
     for attr in attrs:

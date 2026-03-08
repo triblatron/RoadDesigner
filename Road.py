@@ -48,7 +48,7 @@ class Road:
         self.segment.normals.append(glm.vec3(0.0, 0.0, 1.0))
         self.segment.binormals.append(glm.vec3(1.0, 0.0, 0.0))
 
-    def create_arc(self, length: float, radius: float):
+    def create_arc(self, length: float, radius: float, num_divisions: int):
         self.segment = Arc()
         self.segment.points.append(glm.vec3(0.0, 0.0, 0.0))
         self.segment.tangents.append(glm.vec3(0.0, 1.0, 0.0))
@@ -56,7 +56,7 @@ class Road:
         self.segment.binormals.append(glm.vec3(1.0, 0.0, 0.0))
         self.segment.radius = radius
         self.segment.length = length
-        self.segment.build()
+        self.segment.build(num_divisions)
 
     # type of geometry
     type: RoadType

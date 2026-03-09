@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
-id = "road_tools"
-version = "1.0.0"
+id = "road_designer"
+version = "0.1.0"
 name = "RoadDesigner"
 tagline = "Designs roads according to UK highway standards"
 maintainer = "Tony Horrobin"

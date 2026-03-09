@@ -1,14 +1,10 @@
 from enum import Enum
 from typing import Any
 
-from Arc import Arc
-from Straight import Straight
-from Quad import Quad
-from Segment import Segment
+from . import Arc
+from . import Straight
+from . import Quad
 from pyglm import glm
-
-from Vertex import Vertex
-
 
 class RoadType(Enum):
     STRAIGHT = 0
@@ -29,7 +25,7 @@ class Road:
 
     def beginProfile(self):
         self.inMesh = True
-        self.meshes.append(Quad())
+        self.meshes.append(Quad.Quad())
         self.meshes[-1].begin()
 
     def vertex(self, x, y, z, u, v):
@@ -41,7 +37,7 @@ class Road:
         self.meshes[-1].end()
 
     def create_straight(self, length: float):
-        self.segment = Straight()
+        self.segment = Straight.Straight()
         self.segment.points.append(glm.vec3(0.0, 0.0, 0.0))
         self.segment.points.append(glm.vec3(0.0, length, 0.0))
         self.segment.tangents.append(glm.vec3(0.0, 1.0, 0.0))
@@ -50,7 +46,7 @@ class Road:
         self.segment.build()
 
     def create_arc(self, length: float, radius: float, num_divisions: int):
-        self.segment = Arc()
+        self.segment = Arc.Arc()
         self.segment.points.append(glm.vec3(0.0, 0.0, 0.0))
         self.segment.tangents.append(glm.vec3(0.0, 1.0, 0.0))
         self.segment.normals.append(glm.vec3(0.0, 0.0, 1.0))
@@ -61,7 +57,7 @@ class Road:
 
     # type of geometry
     type: RoadType
-    meshes: list[Quad]
+    meshes: list[Quad.Quad]
     segment: Any
     first_point: glm.vec3
     middle_point: glm.vec3

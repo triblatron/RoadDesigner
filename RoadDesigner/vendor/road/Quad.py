@@ -1,5 +1,5 @@
 from pyglm import glm
-from Vertex import Vertex
+from . import Vertex
 from functools import cmp_to_key
 
 class Quad:
@@ -9,15 +9,15 @@ class Quad:
     def configure(self, config):
         if "verts" in config:
             for vertConfig in config["verts"]:
-                vert = Vertex()
+                vert = Vertex.Vertex()
                 vert.configure(vertConfig)
                 self.verts.append(vert)
         self.sort()
 
     def sort(self):
-        self.verts = sorted(self.verts, key=cmp_to_key(Vertex.compare) )
+        self.verts = sorted(self.verts, key=cmp_to_key(Vertex.Vertex.compare) )
 
-    def addVertex(self, vertex: Vertex):
+    def addVertex(self, vertex: Vertex.Vertex):
         self.verts.append(vertex)
 
     def begin(self):
@@ -27,8 +27,8 @@ class Quad:
         self.sort()
 
     def vertex(self, x, y, z, u, v):
-        self.verts.append(Vertex())
+        self.verts.append(Vertex.Vertex())
         self.verts[-1].position = glm.vec3(x, y, z)
         self.verts[-1].tex_coord = glm.vec2(u, v)
 
-    verts : list[Vertex]
+    verts : list[Vertex.Vertex]

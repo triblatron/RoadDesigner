@@ -1,5 +1,4 @@
-from Polyline import Polyline
-from Segment import Segment
+from . import Polyline
 from pyglm import glm
 
 class Straight:
@@ -27,7 +26,7 @@ class Straight:
         return {}
 
     def build(self):
-        self.tessellation = Polyline(1)
+        self.tessellation = Polyline.Polyline(1)
         self.tessellation.points[0] = self.points[0]
         self.tessellation.points[1] = self.points[1]
 

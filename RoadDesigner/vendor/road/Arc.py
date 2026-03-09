@@ -1,11 +1,6 @@
 import math
-from ctypes.wintypes import LPPOINT
-
 from pyglm import glm
-
-from Polyline import Polyline
-from Segment import Segment
-
+from . import Polyline
 
 class Arc:
     def __init__(self):

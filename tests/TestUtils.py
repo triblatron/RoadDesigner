@@ -18,8 +18,11 @@ def find(obj:Any, path:str):
         if m is not None:
             obj = operator.getitem(getattr(obj, m.group(1)),int(m.group(2)))
         else:
-            obj = getattr(obj, attr)
             if callable(obj):
-                return obj()
+                obj = obj()
+            if isinstance(obj, dict):
+                obj = obj[attr]
+            else:
+                obj = getattr(obj, attr)
 
     return obj

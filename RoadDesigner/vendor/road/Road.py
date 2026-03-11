@@ -21,18 +21,24 @@ class Road:
     def __init__(self):
         self.meshes = []
         self.segment = None
+        self.profiles = {}
 
     def configure(self, config: dict):
         if "meshes" in config:
             for meshConfig in config["meshes"]:
-                self.beginProfile()
+                self.beginProfile("")
                 self.meshes[-1].configure(meshConfig)
                 self.endProfile()
 
-    def beginProfile(self):
+    def beginProfile(self, name: str):
         self.inMesh = True
         self.meshes.append(Quad.Quad())
+        if len(name)>0:
+            self.profiles[name] = self.meshes[-1]
         self.meshes[-1].begin()
+
+    # def __getitem__(self, key):
+    #     return self.profiles[key]
 
     def vertex(self, x, y, z, u, v):
         if self.inMesh:

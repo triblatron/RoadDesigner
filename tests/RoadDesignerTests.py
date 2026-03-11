@@ -84,7 +84,10 @@ class RoadDesignerTests(unittest.TestCase):
         ("data/tests/Road/straight.toml", "segment.tangents[0].y", 1.0),
         ("data/tests/Road/straight.toml", "segment.tessellation.num_points", 2),
         ("data/tests/Road/arc.toml", "segment.tangents[1].y", math.cos(19.25138192/180*math.pi)),
-        ("data/tests/Road/arc.toml", "segment.tessellation.num_points", 11)
+        ("data/tests/Road/arc.toml", "segment.tessellation.num_points", 11),
+        ("data/tests/Road/arc.toml", "profiles.bed.width", 7.3),
+        ("data/tests/Road/arc.toml", "profiles.bed.length", 0.2),
+        # ("data/tests/Road/arc.toml", "surface.points[0].x", -3.65),
     ])
     def test_segment(self, config_filename: str, path: str, value):
         build_script = RoadBuildScript()

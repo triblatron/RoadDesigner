@@ -7,8 +7,8 @@ class RoadBuildCommand:
 
     def makeItSo(self, road):
         if len(self.args) > 0:
-            if self.args[0] == "beginProfile":
-                road.beginProfile()
+            if self.args[0] == "beginProfile" and len(self.args) == 2:
+                road.beginProfile(self.args[1])
             elif self.args[0] == "endProfile":
                 road.endProfile()
             elif self.args[0] == "vertex" and len(self.args) == 6:

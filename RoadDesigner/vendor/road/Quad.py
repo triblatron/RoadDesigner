@@ -34,4 +34,10 @@ class Quad:
         self.verts[-1].position = glm.vec3(x, y, z)
         self.verts[-1].tex_coord = glm.vec2(u, v)
 
+    def width(self):
+        return glm.length(self.verts[1]-self.verts[0])
+
+    def length(self):
+        return glm.length(self.verts[2] - self.verts[0])
+
     verts : list[Vertex.Vertex]

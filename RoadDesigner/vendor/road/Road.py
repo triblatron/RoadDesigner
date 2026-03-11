@@ -1,14 +1,17 @@
 from enum import Enum
 from typing import Any
 
+
 try:
     from . import Arc
     from . import Straight
     from . import Quad
+    from . import SweptSurface
 except ImportError:
     import Arc
     import Straight
     import Quad
+    import SweptSurface
 
 from pyglm import glm
 
@@ -22,6 +25,7 @@ class Road:
         self.meshes = []
         self.segment = None
         self.profiles = {}
+        self.surface = None
 
     def configure(self, config: dict):
         if "meshes" in config:
@@ -56,6 +60,8 @@ class Road:
         self.segment.normals.append(glm.vec3(0.0, 0.0, 1.0))
         self.segment.binormals.append(glm.vec3(1.0, 0.0, 0.0))
         self.segment.build()
+        self.surface = SweptSurface.SweptSurface(self.meshes, self.segment)
+        self.surface.build()
 
     def create_arc(self, length: float, radius: float, num_divisions: int):
         self.segment = Arc.Arc()

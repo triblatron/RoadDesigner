@@ -4,9 +4,9 @@ try:
 except ImportError:
     import vendor.road
 
-class CreateStraight(bpy.types.Operator):
-    bl_idname = "object.create_straight"
-    bl_label = "Create a straight road"
+class CreateArc(bpy.types.Operator):
+    bl_idname = "object.create_arc"
+    bl_label = "Create a circular arc road"
     def execute(self, context):
         # 1. Create a Road at the specified start point
         props = context.scene.road_tool_props
@@ -25,7 +25,7 @@ class CreateStraight(bpy.types.Operator):
 
         road = Road.Road()
 
-        road.create_straight(props.road_length)
+        road.create_arc(props.road_length, props.road_radius, props.num_divisions)
 
         # 2. Copy the Polyline into a mesh
         curve_data = bpy.data.curves.new("Polyline", type='CURVE')
@@ -34,7 +34,7 @@ class CreateStraight(bpy.types.Operator):
         spline = curve_data.splines.new(type='POLY')
 
         # Spline starts with 1 point, add the rest
-        spline.points.add(1)
+        spline.points.add(road.segment.tessellation.num_points()-1)
 
         print(f"Tessellation has {road.segment.tessellation.num_points()} points")
         for i, p in enumerate(road.segment.tessellation.points):

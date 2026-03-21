@@ -33,14 +33,17 @@ import bpy.props
 def get_length(self):
     return (self.end_point - self.start_point).length
 
+def set_length(self, value):
+    pass  # read-only; ignore attempts to set it, or implement accordingly
 
 class RoadDesignerProperties(bpy.types.PropertyGroup):
     profile_file: bpy.props.StringProperty(
         name="Profile",
         description="Path to a .blend file",
-        subtype='FILE_PATH'
+        subtype='FILE_PATH',
+        default='/Users/tony/tartings/blender/RoadTools/models/profile_rural.blend'
     )
-    road_length: bpy.props.FloatProperty(name="Road Length",description="The length of the road", get=get_length, subtype='DISTANCE', default=252.0)
+    road_length: bpy.props.FloatProperty(name="Road Length", description="The length of the road", get=get_length, set=set_length, subtype='DISTANCE',)
     road_width: bpy.props.FloatProperty(name="Road Width", description="The width of the road", subtype='DISTANCE', default=7.3)
     road_radius: bpy.props.FloatProperty(name="Road Radius", description="The radius of the road", subtype='DISTANCE', default=750.0)
     num_divisions: bpy.props.IntProperty(name="Number of divisions", description="The number of divisions in the swept surface of the road", default=1)

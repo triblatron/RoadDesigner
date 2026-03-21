@@ -26,7 +26,7 @@ class SweptSurfaceConverter:
         context.collection.objects.link(self.obj)
         
         material_index_map = {}
-        for quad_index, quad in enumerate(self.surface.quads):
+        for quad_index, quad in enumerate(profile_meshes):
             mat = profile_objs[quad_index].data.materials[0]
             if mat.name not in material_index_map:
                 material_index_map[mat.name] = len(self.obj.data.materials)
@@ -41,7 +41,7 @@ class SweptSurfaceConverter:
             v4 = self.add_vert(self.surface.points[quad[3]])
 
             face = self.bm.faces.new([v1, v2, v3, v4])
-            mat = profile_objs[quad_index].data.materials[0]
+            mat = profile_objs[quad_index % len(profile_objs)].data.materials[0]
             face.material_index = material_index_map[mat.name]            
             for loop, vert_index in zip(face.loops, quad):
                 op.report({'INFO'}, f"Adding loop {loop} to UVMap with vertex index {vert_index} position {self.surface.points[vert_index].position} uv {self.surface.points[vert_index].tex_coord}")
